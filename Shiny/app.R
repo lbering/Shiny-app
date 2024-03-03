@@ -1,6 +1,6 @@
 #----------- LIBRARIES --------------#
 library(shiny)
-#library(shinydashboard)
+library(shinydashboard)
 library(sf) #for map
 library(ggplot2)
 library(leaflet)
@@ -19,7 +19,7 @@ ui <- fluidPage(
     sidebarPanel(  
       fluidRow(
         column(3, #DTU LOGO
-          img(src='dtu.svg', height = 50)
+          img(src='dtu.png', height = 50)
         )
       ),
       
@@ -28,7 +28,7 @@ ui <- fluidPage(
         # Input selection:
           selectInput("Areas", h4("Område"),
                       choices=list("Nordlige Kattegat", "Kattegat, øst for Læsø", "Nord for Øresund",
-                                   "Øresund", "Storebælt", "Mecklenburg bugten", "Sydvest for Bornholm"),
+                                   "Øresund", "Storebælt", "Mecklenburg Bugten", "Sydvest for Bornholm"),
                       selected="Nordlige Kattegat"
           ),
           
@@ -41,7 +41,7 @@ ui <- fluidPage(
                                        selected="Juvenile"),
                           ),column(6,
                           h4("Periode"),
-                          em("Vælg den periode der skal sammenlignes med perioden 2018-2022"),
+                          em("Vælg den periode, der skal sammenlignes med perioden 2018-2022"),
                           radioButtons("periode", "",
                                        choices= list("2000-2005","2006-2011","2012-2017"),
                                        selected="2000-2005"))
@@ -52,19 +52,19 @@ ui <- fluidPage(
     # Main panel for displaying plot outputs, Størrelsesgruppe-explanation and Background
     mainPanel( #Output: Tabset w/ plot, summary, and table
       tabsetPanel(type = "tabs",
-                  tabPanel("Plot",icon = icon("chart-column"),
+                  tabPanel("Resultater",icon = icon("chart-column"),
                            h3(textOutput("choices")),
                            plotOutput("resultJ"),
                            textOutput("xaxis"),
+                           includeHTML("plot_text.Rhtml")
                            ),
                   
                   tabPanel("Størrelsesgrupper",icon = icon("fish"),
-                           includeHTML("App_content.Rhtml")
-                           
+                           includeHTML("Størrelsesgrupper.Rhtml")
+                          
                            ),
                   tabPanel("Baggrund",icon = icon("info"),
-                           includeHTML("Baggrund.Rhtml"),
-
+                           includeHTML("Baggrund.Rhtml")
                            )
                   )#close tabsetPanel
               )#close mainPanel
@@ -77,16 +77,12 @@ server <- function(input, output) {
   
   # Header of plot:
   output$choices<-renderText({
-    paste(input$Sizes,"fisk i", input$Areas, "sammenlignet med perioden",input$periode)
+    paste(input$Sizes,"fisk i", input$Areas, "i perioden 2018-2022 sammenlignet med",input$periode)
     })
   
   #X-axis:
   output$xaxis<-renderText({paste(
-    "Ændring i procent fra", input$periode, "til 2018-2022 for", input$Sizes, " fisk i", input$Areas,
-    ". Rød betyder at der har været en tilbagegang i arten og grøn, at der er sket en stigning. Grå betyder at der ikke er observeret en signifikant ændring 
-    eller at den observerede ændring kan skyldes tilfældigheder og måle-usikkerhed. 
-    Er der ikke vist noget resultat, har der ikke været tilstrækkeligt med data.
-    Bemærk at Grå ikke nødvendigvis er et dårligt tegn, hvis forekomsten af fisk på et sundt niveau i begge perioder der sammenlignes., Omvendt kan grå også betyde at forekomsten er på et uhensigtsmæssigt lavt niveau i begge perider.")
+    "Ændring i procent fra", input$periode, "til 2018-2022 for", input$Sizes, " fisk i", input$Areas,".")
     })
 
   #Map:
@@ -102,7 +98,7 @@ server <- function(input, output) {
          img(src='Øresund.png',width="100%")
          }else if(input$Areas=="Storebælt"){
          img(src='Storebælt.png',width="100%")
-         }else if(input$Areas=="Mecklenburg bugten"){
+         }else if(input$Areas=="Mecklenburg Bugten"){
            img(src='Mecklenburg.png',width="100%")
          }else if(input$Areas=="Sydvest for Bornholm"){
                 img(src='Østersøen.png',width="100%")
@@ -146,12 +142,12 @@ server <- function(input, output) {
       newdat<- readRDS("../GAM/newdat/newdat_storebæltM.rds")
     }else if(input$Areas=="Storebælt" && input$Sizes=="Ældre kønsmodne"){
       newdat<- readRDS("../GAM/newdat/newdat_storebæltA.rds")
-      #----- Mecklenburg bugten-----#
-    }else if(input$Areas=="Mecklenburg bugten" && input$Sizes=="Juvenile"){
+      #----- Mecklenburg Bugten-----#
+    }else if(input$Areas=="Mecklenburg Bugten" && input$Sizes=="Juvenile"){
       newdat<- readRDS("../GAM/newdat/newdat_femerenJ.rds")
-    }else if(input$Areas=="Mecklenburg bugten" && input$Sizes=="Unge kønsmodne"){
+    }else if(input$Areas=="Mecklenburg Bugten" && input$Sizes=="Unge kønsmodne"){
       newdat<- readRDS("../GAM/newdat/newdat_femerenM.rds")
-    }else if(input$Areas=="Mecklenburg bugten" && input$Sizes=="Ældre kønsmodne"){
+    }else if(input$Areas=="Mecklenburg Bugten" && input$Sizes=="Ældre kønsmodne"){
       newdat<- readRDS("../GAM/newdat/newdat_femerenA.rds")
       #----- Sydvest for Bornholm-----#
     }else if(input$Areas=="Sydvest for Bornholm" && input$Sizes=="Juvenile"){

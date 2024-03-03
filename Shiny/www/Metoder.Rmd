@@ -25,14 +25,14 @@ Data er hentet fra ICES’ Database of Trawl Surveys ([DATRAS](https://www.ices.
 *	Mange datapunkter (hauls)
 *	Repræsentere, så vidt muligt, forskellige fysiske parametre
 
-En shape-fil af havbundssediment ([DHI, EuSeaMap, BALANCE](https://metadata.helcom.fi/geonetwork/srv/eng/catalog.search#/metadata/ab71bbf8-eacc-4a93-9504-46210da8fe6d)) tilføjes og klippes til, så det passer til områderne, for på den måde senere at kunne tilføje en kolonne i attributtabellen om sedimenttype. Billedet til højre viser placeringen af områder samt hauls fra hhv. NS-IBTS og BITS. 
+En shape-fil af havbundssediment ([DHI, EuSeaMap, BALANCE](https://metadata.helcom.fi/geonetwork/srv/eng/catalog.search#/metadata/ab71bbf8-eacc-4a93-9504-46210da8fe6d)) tilføjes og klippes til, så det passer til områderne, for på den måde senere at kunne tilføje en kolonne i attributtabellen om sedimenttype. Billedet til højre viser placeringen af områder samt hauls fra hhv. NS-IBTS og BITS for hele perioden. 
 
 
 ## Data rensning og præperering
 
-Mange af de valg der er taget i forhold til rensning af data er taget på baggrund af en masse deskriptiv statistik. Data rensning er dokumenteret i mappen **data_cleaning** på github. 
+Mange af de valg der er taget i forhold til rensning af data er taget på baggrund af en masse deskriptiv statistik. Data rensning er dokumenteret i mappen **data_cleaning** på GitHub. 
 
-På baggrund af dette inddeles hver art i tre størrelser ud fra både biologiske kriterier samt min/maks længder for fangst (se skema i app)
+På baggrund af dette inddeles hver art i tre størrelser ud fra både biologiske kriterier samt min/maks længder for fangst (se skema i app).
 For hvert område/art/størrelse er følgende datapræparering/rensning foretaget: 
 
 *	Kun kvartal 1 og 4
@@ -47,12 +47,13 @@ Tabellen nedenfor viser antallet af hauls i hvert område efter datarensning.
 |Område                          | Antal hauls |
 | :----------------------------- | :---------: |
 |Nordlige Kattegat               | 154         |
-|Kattegat, vest for Læsø         | 225         |
+|Kattegat, øst for Læsø          | 225         |
 |Kattegat, nord for Øresund      | 77          |              
 |Øresund                         | 143         |
 |Storebælt                       | 231         |    
 |Mecklenburg Bugten              | 372         |            
 |Østersøen, sydvest for Bornholm | 260         | 
+
 
 
 ## Generalised Additive Mixed Models (GAMM)
@@ -81,7 +82,7 @@ Hvor
 *	`Quarter` er kvartalet, dvs. enten kvartal 1 eller 4
 *	`SedimentDK` er sedimenttypen. Der er fem forskellige typer. Sedimenttypen er identificeret på baggrund af tidligere nævnte havbundssedimentkort samt longitude og latitude for de enkelte hauls. 
 
-`get.mini.model` henviser til scriptet **funcs.R**, som finder den bedste, mindst komplekse model. Med modellerne udregnes nu en *”predicted CPUE"* og en *”predicted standard deviation”*. De gemmes som **newdat.rds**, så model-resultaterne kan bruges i shiny appen. I alt er lavet 126 modeller. Nogle modeller har ikke kunne konvergere og kan ses i tabellen nedenunder. Alle scripts kan findes på [github](https://github.com/lbering/Shiny-app).
+`get.mini.model` henviser til scriptet **funcs.R**, som finder den bedste model-kombination. Med modellerne udregnes nu en *predicted CPUE* og en *predicted standard deviation*. De gemmes som **newdat.rds**, så model-resultaterne kan bruges i shiny appen. I alt er lavet 126 modeller. Nogle modeller har ikke kunne konvergere og kan ses i tabellen nedenunder. Alle scripts kan findes på [GitHub](https://github.com/lbering/Shiny-app).
 
 #### Modeller med warnings
 
@@ -90,7 +91,7 @@ Hvor
 +--------------------------------+-----------------------+
 |Nordlige Kattegat               | - Voksne brisling     |
 +--------------------------------+-----------------------+
-|Kattegat, vest for Læsø         | - Juvenile skrubber   |
+|Kattegat, øst for Læsø          | - Juvenile skrubber   |
 +--------------------------------+-----------------------+
 |Kattegat, nord for Øresund      | - Voksne hvilling     |      
 |                                | - Unge skrubber       |
