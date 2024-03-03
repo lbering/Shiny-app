@@ -1,6 +1,6 @@
 #----------- LIBRARIES --------------#
 library(shiny)
-library(shinydashboard)
+#library(shinydashboard)
 library(sf) #for map
 library(ggplot2)
 library(leaflet)
@@ -60,10 +60,11 @@ ui <- fluidPage(
                   
                   tabPanel("Størrelsesgrupper",icon = icon("fish"),
                            includeHTML("App_content.Rhtml")
-                          
+                           
                            ),
                   tabPanel("Baggrund",icon = icon("info"),
-                           includeHTML("Baggrund.Rhtml")
+                           includeHTML("Baggrund.Rhtml"),
+
                            )
                   )#close tabsetPanel
               )#close mainPanel
