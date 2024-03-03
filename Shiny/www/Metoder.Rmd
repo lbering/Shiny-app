@@ -2,8 +2,7 @@
 title: "Teknisk beskrivelse og dokumentation"
 output:
   html_document: default
-  pdf_document: default
-date: "2024-02-26"
+date: "2024-03-03"
 ---
 
 ```{r setup, include=FALSE}
@@ -30,9 +29,10 @@ En shape-fil af havbundssediment ([DHI, EuSeaMap, BALANCE](https://metadata.helc
 
 ## Data rensning og præperering
 
-Mange af de valg der er taget i forhold til rensning af data er taget på baggrund af en masse deskriptiv statistik. Data rensning er dokumenteret i mappen **data_cleaning** på GitHub. 
+**(mange af de valg der er taget, i forhold til rensning af data er taget på baggrund af en masse deskriptiv statistik). Data rensning er dokumenteret i et R-script.**
 
-På baggrund af dette inddeles hver art i tre størrelser ud fra både biologiske kriterier samt min/maks længder for fangst (se skema i app).
+
+Derudover inddeles hver art i tre størrelser ud fra både biologiske kriterier samt min/maks længder for fangst (se skema i app)
 For hvert område/art/størrelse er følgende datapræparering/rensning foretaget: 
 
 *	Kun kvartal 1 og 4
@@ -40,7 +40,7 @@ For hvert område/art/størrelse er følgende datapræparering/rensning foretage
 *	Der laves en ny kolonne med et ”unikt” haul ID, da der ellers tælles fra 1 ved hvert nyt år. 
 *	Alle længdeklasser skal repræsenteres, så der tilføjes ”0” i de klasser, der ikke er fanget i haulet.
 *	En ny kolonne tilføjes med den summerede ”CPUE_number_per_hour” for hvert unikt haul af den specifikke kombination af art, størrelsesklasse og område. 
-*	Et nyt datasæt (.csv) gemmes for hver art og en kolonne (source) der fortæller hvilket område og størrelse der er tale om. F.eks. øresund_codJ (for juvenile torsk i øresund). I alt **6 csv-filer**.
+*	Et nyt datasæt (.csv) gemmes for hver art og en kolonne (source) der fortæller hvilket område og størrelse der er tale om. F.eks. øresund_codJ (for juvenile torsk i Øresund). I alt **6 csv-filer**.
 
 Tabellen nedenfor viser antallet af hauls i hvert område efter datarensning.
 
@@ -73,16 +73,19 @@ mod.plaiceJ <- gam(cpue ~
 mod.plaiceJ <- get.mini.model(mod. plaiceJ, check.terms = c("period", "depth", "Quarter", "SedimetnDK"))
 ```
 
+
 Hvor 
 
 * `cpue` er responsvariablen og er den summerede CPUE_number_per_hour for alle længder af arten i størrelsesgruppen i et haul. 
 *	`period` er en af følgende perioder: 2000-2005, 2006-2012, 2013-2018, 2019-2024 (OBS der er kun data inkluderet til og med 2022)
 *	`s(depth)` er dybden der er blevet trawlet på
-*	`s(Gear)` er typen af gear der er brugt (læs mere om gear-typer på ICES hjemmeside [her](https://vocab.ices.dk/?ref=2))
-*	`Quarter` er kvartalet, dvs. enten kvartal 1 eller 4
-*	`SedimentDK` er sedimenttypen. Der er fem forskellige typer. Sedimenttypen er identificeret på baggrund af tidligere nævnte havbundssedimentkort samt longitude og latitude for de enkelte hauls. 
+*	`s(Gear)` er typen af gear der er brugt (læs mere på ICES hjemmeside)
+*	`Quarter` er kvartalet, dvs enten kvartal 1 eller 4
+*	`SedimentDK` er sedimenttypen. Der er fem forskellige typer. Sedimenttypen er identificeret på baggrund af ovennævnte sedimentkort samt longitude og latitude for de enkelte hauls. 
 
-`get.mini.model` henviser til scriptet **funcs.R**, som finder den bedste model-kombination. Med modellerne udregnes nu en *predicted CPUE* og en *predicted standard deviation*. De gemmes som **newdat.rds**, så model-resultaterne kan bruges i shiny appen. I alt er lavet 126 modeller. Nogle modeller har ikke kunne konvergere og kan ses i tabellen nedenunder. Alle scripts kan findes på [GitHub](https://github.com/lbering/Shiny-app).
+
+
+`get.mini.model` henviser til scriptet **funcs.R**, som finder den bedste model. Med modellerne udregnes nu en *predicted CPUE* og en *predicted standard deviation*. De gemmes som **newdat.rds**, så model-resultaterne kan bruges i shiny appen. I alt er lavet 126 modeller. Nogle modeller har ikke kunne konvergere og kan ses i tabellen nedenunder. Alle scripts kan findes på [GitHub](https://github.com/lbering/Shiny-app).
 
 #### Modeller med warnings
 
